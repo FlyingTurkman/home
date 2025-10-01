@@ -85,7 +85,7 @@ export default function ProductCard({
 
                     {/* Price label */}
                     <Label>
-                        {product.price} $
+                        {(product.price * count).toFixed(2)} $
                     </Label>
                 </div>
             </CardContent>
