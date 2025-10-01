@@ -32,6 +32,8 @@ export default function ProductCard({
     product: productType
 }) {
 
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+
     const [count, setCount] = useState<number>(1)
 
     const { setCart } = useSiteContext()
@@ -119,22 +121,8 @@ export default function ProductCard({
                     </div>
                     <Button
                     className="w-full"
-                    onClick={ async () => {
-                        const response = await addToBasket({
-                            ...product,
-                            count
-                        })
-
-                        if (response.status) {
-                            toast.success('İşlem başarılı', {
-                                description: response.message
-                            })
-                        } else {
-                            toast.error('İşlem başarısız.', {
-                                description: response.message
-                            })
-                        }
-                    }}
+                    disabled={isLoading}
+                    onClick={addProductToBasketFunction}
                     >
                         <FaShoppingCart/>
                         Sepete Ekle
@@ -143,4 +131,57 @@ export default function ProductCard({
             </CardFooter>
         </Card>
     )
+
+    async function addProductToBasketFunction() {
+
+        if (isLoading) return
+
+        setIsLoading(true)
+
+        try {
+            const res = await fetch(`${process.env.cartDomain}/cart/api/homeApi/${product.id}`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    count
+                })
+            })
+
+            const fetchResponse = await res.json()
+
+            if (res.status != 200) {
+                toast.error(fetchResponse)
+
+                setIsLoading(false)
+                return
+            }
+
+
+            const response = await addToBasket({
+                ...product,
+                count
+            })
+
+            if (response.status) {
+                toast.success('İşlem başarılı', {
+                    description: response.message
+                })
+
+                if (response.products) {
+                    setCart(response.products)
+                }
+            } else {
+                toast.error('İşlem başarısız.', {
+                    description: response.message
+                })
+            }
+        } catch (error) {
+            console.log('Error: ', error)
+
+            toast.error('İşlem başarısız.', {
+                description: 'Beklenmedik bir hata meydana geldi.'
+            })
+        }
+        
+        setIsLoading(false)
+    }
 }

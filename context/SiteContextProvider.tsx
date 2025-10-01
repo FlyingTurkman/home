@@ -2,15 +2,15 @@
 
 
 import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState } from "react"
-import { cartProductType } from '@/types'
+import { cartCookieType, cartProductType } from '@/types'
 
 
 
 
 
 export type siteContextType = {
-    cart: cartProductType[]
-    setCart: Dispatch<SetStateAction<cartProductType[]>>
+    cart: cartCookieType[]
+    setCart: Dispatch<SetStateAction<cartCookieType[]>>
 }
 
 
@@ -39,7 +39,7 @@ export default function SiteContextProvider({
     children: ReactNode
 }) {
 
-    const [cart, setCart] = useState<cartProductType[]>([])
+    const [cart, setCart] = useState<cartCookieType[]>([])
 
     const value: siteContextType = {
         cart,

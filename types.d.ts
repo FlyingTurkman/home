@@ -32,3 +32,12 @@ export type responseType = {
     status: boolean,
     message?: string
 }
+
+
+declare global {
+    namespace NodeJS {
+        interface ProcessEnv {
+            cartDomain: string
+        }
+    }
+}

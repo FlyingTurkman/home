@@ -27,18 +27,6 @@ export default function MainPageClient({
         <div
         className="container mx-auto my-10"
         >
-            <Button
-            onClick={() => {
-
-                fetch('http://localhost:3001/cart/api/homeApi/1', {
-                    method: 'POST',
-                    mode: 'cors',
-                    body: JSON.stringify({ count: 1 })
-                })
-            }}
-            >
-                Test
-            </Button>
             <div
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 direction-rtl"
             >
