@@ -10,15 +10,15 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/cart',
-        destination: 'http://localhost:3001/cart',
+        destination: `${process.env.cartDomain}/cart`,
       },
       {
         source: '/cart/:path*',
-        destination: 'http://localhost:3001/cart/:path*',
+        destination: `${process.env.cartDomain}/cart/:path*`,
       },
       {
         source: '/cart-static/:path*',
-        destination: 'http://localhost:3001/cart-static/:path*',
+        destination: `${process.env.cartDomain}/cart-static/:path*`,
       },
     ]
   },
