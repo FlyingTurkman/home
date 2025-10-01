@@ -4,9 +4,9 @@ import { IoMenu } from "react-icons/io5"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet"
 import { Separator } from "../ui/separator"
 import Link from "next/link"
-import { buttonVariants } from "../ui/button"
+import { Button, buttonVariants } from "../ui/button"
 import { useEffect, useState } from "react"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 
 
 
@@ -20,6 +20,8 @@ import { usePathname } from "next/navigation"
 
 
 export default function MainMenu() {
+
+    const router = useRouter()
 
     const pathname = usePathname()
 
@@ -45,12 +47,13 @@ export default function MainMenu() {
                     >
                         Ana Sayfa
                     </Link>
-                    <Link
+                    <a
                     href={'/cart'}
                     className={buttonVariants({ variant: 'ghost' })}
+
                     >
                         Sepetim
-                    </Link>
+                    </a>
                 </div>
 
                 {/* Mobile menu */}
@@ -81,12 +84,12 @@ export default function MainMenu() {
                             >
                                 Ana Sayfa
                             </Link>
-                            <Link
+                            <a
                             href={'/cart'}
                             className={buttonVariants({ variant: 'link', className: '!justify-start' })}
                             >
                                 Sepetim
-                            </Link>
+                            </a>
                         </SheetContent>
                     </Sheet>
                 </div>

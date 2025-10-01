@@ -6,18 +6,18 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/cart',
-        destination: 'http://localhost:3001/cart'
+        destination: 'http://localhost:3001/cart',
       },
       {
-        source: '/cart/:path+',
-        destination: 'http://localhost:3001/cart/:path+'
+        source: '/cart/:path*',
+        destination: 'http://localhost:3001/cart/:path*',
       },
       {
-          source: '/cart-static/:path+',
-          destination: `http://localhost:3001/cart-static/:path+`,
-      }
+        source: '/cart-static/:path*',
+        destination: 'http://localhost:3001/cart-static/:path*',
+      },
     ]
-  }
+  },
 };
 
 export default nextConfig;

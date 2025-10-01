@@ -7,7 +7,7 @@ import Image from "next/image"
 import { imageLoader } from "@/lib/src/imageLoader"
 import { Label } from "../ui/label"
 import ProductStars from "./ProductStars"
-import { addToBasket } from "@/lib/src/addToBasket"
+import { addToBasket } from "@/actions/addToBasket"
 import { useSiteContext } from "@/context/SiteContextProvider"
 import { toast } from "sonner"
 import { FaShoppingCart } from "react-icons/fa"
@@ -29,6 +29,7 @@ export default function ProductCard({
 }: {
     product: productType
 }) {
+
 
     const { setCart } = useSiteContext()
 
@@ -86,15 +87,21 @@ export default function ProductCard({
             <CardFooter>
                 <Button
                 className="w-full"
-                onClick={() => {
-                    const response = addToBasket({
+                onClick={ async () => {
+                    const response = await addToBasket({
                         ...product,
                         count: 1
                     })
 
-                    setCart(response)
-                    
-                    toast.success('')
+                    if (response.status) {
+                        toast.success('İşlem başarılı', {
+                            description: response.message
+                        })
+                    } else {
+                        toast.error('İşlem başarısız.', {
+                            description: response.message
+                        })
+                    }
                 }}
                 >
                     <FaShoppingCart/>
