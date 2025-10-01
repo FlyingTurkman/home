@@ -7,6 +7,8 @@ import Link from "next/link"
 import { Button, buttonVariants } from "../ui/button"
 import { useEffect, useState } from "react"
 import { usePathname, useRouter } from "next/navigation"
+import { useSiteContext } from "@/context/SiteContextProvider"
+import { Label } from "../ui/label"
 
 
 
@@ -21,7 +23,7 @@ import { usePathname, useRouter } from "next/navigation"
 
 export default function MainMenu() {
 
-    const router = useRouter()
+    const { cart } = useSiteContext()
 
     const pathname = usePathname()
 
@@ -53,6 +55,15 @@ export default function MainMenu() {
 
                     >
                         Sepetim
+                        {cart.length > 0 && (
+                            <div
+                            className="flex w-6 h-6 rounded-full shrink-0 bg-destructive text-primary-foreground items-center justify-center"
+                            >
+                                <Label>
+                                    {cart.length <= 9 ? cart.length : '+9'}
+                                </Label>
+                            </div>
+                        )}
                     </a>
                 </div>
 
@@ -89,6 +100,15 @@ export default function MainMenu() {
                             className={buttonVariants({ variant: 'link', className: '!justify-start' })}
                             >
                                 Sepetim
+                                {cart.length > 0 && (
+                                    <div
+                                    className="flex w-6 h-6 rounded-full shrink-0 bg-destructive text-primary-foreground items-center justify-center"
+                                    >
+                                        <Label>
+                                            {cart.length <= 9 ? cart.length : '+9'}
+                                        </Label>
+                                    </div>
+                                )}
                             </a>
                         </SheetContent>
                     </Sheet>

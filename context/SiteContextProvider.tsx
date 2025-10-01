@@ -46,7 +46,7 @@ export default function SiteContextProvider({
         cart,
         setCart
     }
-
+    
     useEffect(() => {
 
         // initial shopping cart set
