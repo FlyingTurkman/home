@@ -1,3 +1,4 @@
+import { tokenExpiryTime } from "@/lib/src/constants"
 import { cartCookieType } from "@/types"
 import { cookies } from "next/headers"
 import { NextResponse, NextRequest } from "next/server"
@@ -41,25 +42,31 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ pro
 
         const items: cartCookieType[] = JSON.parse(store)
 
+        // checking is item in cart
         const cartProduct: cartCookieType | undefined = items.find((item) => item.productId.toString() == productId)
 
         if (!cartProduct) {
             return NextResponse.json('Sepetinizde böyle bir ürün bulunmamaktadır.', { status: 400 })
         }
 
+        // mapping from old cart items and updating new one
         const newCartItems: cartCookieType[] = items.map((item) => {
 
             if (item.productId.toString() == productId) {
+
+                // updated item returning with new count
                 return {
                     productId: Number(productId),
                     count
                 }
             } else {
+
+                // old item returning directly
                 return item
             }
         })
 
-        cookieStore.set('cart', JSON.stringify(newCartItems), { expires: Date.now() + 1000 * 60 * 60 * 24 * 30 })
+        cookieStore.set('cart', JSON.stringify(newCartItems), { expires: Date.now() + tokenExpiryTime })
 
         return NextResponse.json('Ürün başarıyla güncellendi.', { status: 200 })
     } catch (error) {
@@ -89,11 +96,13 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ p
             return NextResponse.json('Sepetiniz zaten boş.', { status: 400 })
         }
 
+        // getting cart items
         const items: cartCookieType[] = JSON.parse(store)
 
+        // filtering cart items
         const newItems: cartCookieType[] = items.filter((item) => item.productId.toString() != productId)
 
-        cookieStore.set('cart', JSON.stringify(newItems), { expires: Date.now() + 1000 * 60 * 60 * 24 * 30})
+        cookieStore.set('cart', JSON.stringify(newItems), { expires: Date.now() + tokenExpiryTime })
 
         return NextResponse.json('Ürün sepetinizden başarıyla kaldırıldı.', { status: 200 })
         

@@ -12,6 +12,7 @@
 
 'use server'
 
+import { tokenExpiryTime } from "@/lib/src/constants";
 import { cartCookieType, cartProductType, responseType } from "@/types";
 import { cookies } from "next/headers";
 
@@ -43,6 +44,8 @@ export async function addToBasket(product: cartProductType): Promise<addTobasket
         let items: cartCookieType[] = []
 
         if (!storage) {
+
+            // if cart empty directly adding product with count
             const cartItem: cartCookieType[] = [{
                 productId: product.id,
                 count: product.count
@@ -51,8 +54,10 @@ export async function addToBasket(product: cartProductType): Promise<addTobasket
             items = cartItem
         } else {
 
+            // getting all cart items
             const oldItems: cartCookieType[] = JSON.parse(storage)
 
+            // finding for existing item. using for count adding
             const existingProduct = oldItems.find((o) => o.productId == product.id)
 
             if (existingProduct) {
@@ -60,6 +65,7 @@ export async function addToBasket(product: cartProductType): Promise<addTobasket
 
                     if (oldItem.productId == product.id) {
 
+                        // updating new count for existing product
                         return {
                             productId: product.id,
                             count: existingProduct.count + product.count
@@ -69,6 +75,8 @@ export async function addToBasket(product: cartProductType): Promise<addTobasket
                     }
                 })
             } else {
+
+                // if product doesnt exist directly adding to cart
                 items = [...oldItems, {
                     productId: product.id,
                     count: product.count
@@ -77,7 +85,7 @@ export async function addToBasket(product: cartProductType): Promise<addTobasket
 
         }
 
-        cookieStore.set('cart', JSON.stringify(items), { expires: Date.now() + 1000 * 60 * 60 * 24 * 30 }) // sets 30 days
+        cookieStore.set('cart', JSON.stringify(items), { expires: Date.now() + tokenExpiryTime }) // sets 30 days
 
         return {
             status: true,
