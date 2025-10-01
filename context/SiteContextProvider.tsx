@@ -3,6 +3,7 @@
 
 import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState } from "react"
 import { cartCookieType, cartProductType } from '@/types'
+import { getBasketItems } from "@/actions/getBasketItems"
 
 
 
@@ -49,13 +50,10 @@ export default function SiteContextProvider({
     useEffect(() => {
 
         // initial shopping cart set
-        const cartStorage = localStorage.getItem('cart')
+        getBasketItems().then((data) => {
+            setCart(data)
+        })
 
-        if (!cartStorage) {
-            setCart([])
-        } else {
-            setCart(JSON.parse(cartStorage))
-        }
     }, [])
     return (
         <SiteContext.Provider
